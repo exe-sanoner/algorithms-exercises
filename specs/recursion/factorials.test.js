@@ -8,13 +8,18 @@
   factorial(1) = 1
   factorial(2) = 2
   factorial(3) = 6 
+
+  EJEMPLO: 5! = 5 * 4!
 */
 
-function factorial(n) {}
+function factorial(num) {
+  if (num < 2) return 1; // base case = 1
+  return num * factorial(num - 1);
+}
 
 // unit tests
 // do not modify the below code
-test.skip("factorials", () => {
+test("factorials", () => {
   expect(factorial(1)).toEqual(1);
   expect(factorial(2)).toEqual(2);
   expect(factorial(3)).toEqual(6);

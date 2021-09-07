@@ -13,12 +13,38 @@
 */
 
 function quickSort(nums) {
-  // code goes here
+  // base case: array of length 0 or 1
+  if (nums.length <= 1) return nums; // o < 2
+
+  // choose pivot (last item) - nums[nums.length] or pop()
+  // REMOVE the pivot!!!!!
+  const pivot = nums.pop();
+
+  // separate into left and right arrays
+  const left = [];
+  const right = [];
+
+  // sort all smaller numbers than the pivot into left
+  // and all bigger numbers into right
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] < pivot) {
+      left.push(nums[i]);
+    } else {
+      right.push(nums[i]);
+    }
+  }
+
+  // call quickSort on left and right arrays
+  // return left, concat(pivot, right)
+  // I can use Spread Operator: "quickSort es un array, please spread this out over this new array"
+  return [...quickSort(left), pivot, ...quickSort(right)];
+  // or  ====>   return quickSort(left).concat(pivot, quickSort(right))
 }
 
 // unit tests
 // do not modify the below code
-test.skip("quickSort", function () {
+test("quickSort", function () {
   const input = [10, 8, 2, 1, 6, 3, 9, 4, 7, 5];
   const answer = quickSort(input);
 

@@ -17,13 +17,50 @@
   you work
 */
 
+// NO SE PUEDEN USAR ARRAYS!!!!!!
+
 class ArrayList {
-  // code goes here
+  constructor() {
+    // instantiate all your variables
+    this.length = 0;
+    this.data = {};
+  }
+  push(value) {
+    // add an item to the end of the array
+    this.data[this.length] = value;
+    this.length++;
+  }
+  pop() {
+    // remove the last item in the array and returns it
+    const response = this.data[this.length - 1]; // ultimo valor
+    delete this.data[this.length - 1];
+    this.length--; // decremento al length
+    return response;
+    // O podria hacer:
+    // return this.delete(this.length - 1);
+  }
+  get(index) {
+    // returns that item from the array
+    return this.data[index];
+  }
+  delete(index) {
+    // removes item from the array and collapses the array
+    const response = this.data[index];
+    this._collapseTo(index);
+    return response;
+  }
+  _collapseTo(index) {
+    for (let i = index; i < this.length; i++) {
+      this.data[i] = this.data[i + 1];
+    }
+    delete this.data[this.length - 1]; // elimino el ultimo
+    this.length--; // decremento al length
+  }
 }
 
 // unit tests
 // do not modify the below code
-describe.skip("ArrayList", function () {
+describe("ArrayList", function () {
   const range = (length) =>
     Array.apply(null, { length: length }).map(Number.call, Number);
   const abcRange = (length) =>

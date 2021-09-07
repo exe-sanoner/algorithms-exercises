@@ -3,19 +3,20 @@
 //
 // it's up to you what to return if the object isn't found (we're not testing that)
 
+// podria usar reduce, filter, foreach
 function linearSearch(id, array) {
   for (let i = 0; i < array.length; i++) {
     if (id === array[i].id) {
       return array[i];
     }
   }
-  return void 0;
+  return void 0; // de otra manera, devuelve undefined
 }
 
 function binarySearch(id, array) {
   let min = 0;
   let max = array.length - 1;
-  let index;
+  let index; // o podria llamarlo simplemente i
   let element;
 
   while (min <= max) {
@@ -30,8 +31,7 @@ function binarySearch(id, array) {
       return element;
     }
   }
-
-  return void 0;
+  return void 0; // de otra manera, devuelve undefined
 }
 
 // unit tests
@@ -53,7 +53,7 @@ test("linear search", function () {
       { id: 2, name: "Marc" },
       { id: 51, name: "Chris" },
       lookingFor,
-      { id: 14, name: "Ben" }
+      { id: 14, name: "Ben" },
     ])
   ).toBe(lookingFor);
 });
@@ -75,7 +75,7 @@ test("binary search", function () {
       { id: 19, name: "Marc" },
       { id: 21, name: "Chris" },
       lookingFor,
-      { id: 24, name: "Ben" }
+      { id: 24, name: "Ben" },
     ])
   ).toBe(lookingFor);
 });

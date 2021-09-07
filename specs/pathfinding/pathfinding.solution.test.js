@@ -15,6 +15,7 @@ const BY_B = 2;
 //
 // you will almost certainly need to transform the maze into your own
 // data structure to keep track of all the meta data
+
 const findShortestPathLength = (maze, [xA, yA], [xB, yB]) => {
   const visited = maze.map((row, y) =>
     row.map((origin, x) => ({
@@ -22,7 +23,7 @@ const findShortestPathLength = (maze, [xA, yA], [xB, yB]) => {
       length: 0,
       openedBy: NO_ONE,
       x,
-      y
+      y,
     }))
   );
   visited[yA][xA].openedBy = BY_A;
@@ -107,7 +108,7 @@ describe("pathfinding – happy path", function () {
     [2, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
-    [0, 0, 0, 2]
+    [0, 0, 0, 2],
   ];
   test("should solve a 4x4 maze", () => {
     expect(findShortestPathLength(fourByFour, [0, 0], [3, 3])).toEqual(6);
@@ -119,7 +120,7 @@ describe("pathfinding – happy path", function () {
     [0, 0, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 1],
     [0, 0, 0, 0, 0, 0],
-    [0, 0, 2, 0, 0, 0]
+    [0, 0, 2, 0, 0, 0],
   ];
   test("should solve a 6x6 maze", () => {
     expect(findShortestPathLength(sixBySix, [1, 1], [2, 5])).toEqual(7);
@@ -133,7 +134,7 @@ describe("pathfinding – happy path", function () {
     [0, 0, 0, 1, 0, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 1, 0],
     [0, 2, 0, 0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 1, 2]
+    [0, 0, 0, 0, 0, 0, 1, 2],
   ];
   test("should solve a 8x8 maze", () => {
     expect(findShortestPathLength(eightByEight, [1, 7], [7, 7])).toEqual(16);
@@ -154,7 +155,7 @@ describe("pathfinding – happy path", function () {
     [0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0],
     [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0],
     [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
   test("should solve a 15x15 maze", () => {
     expect(findShortestPathLength(fifteenByFifteen, [1, 1], [8, 8])).toEqual(
@@ -172,7 +173,7 @@ describe("pathfinding – edge cases", function () {
     [0, 2, 2, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 1, 1, 1, 1],
-    [0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0],
   ];
   test("should solve the maze if they're next to each other", () => {
     expect(findShortestPathLength(byEachOther, [1, 1], [2, 1])).toEqual(1);
@@ -183,7 +184,7 @@ describe("pathfinding – edge cases", function () {
     [0, 2, 0, 0, 0],
     [0, 0, 1, 1, 1],
     [1, 1, 1, 0, 0],
-    [0, 0, 0, 0, 2]
+    [0, 0, 0, 0, 2],
   ];
   test("should return -1 when there's no possible path", () => {
     expect(findShortestPathLength(impossible, [1, 1], [4, 4])).toEqual(-1);

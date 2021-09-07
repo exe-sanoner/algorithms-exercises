@@ -12,27 +12,96 @@
 const { CITY_NAMES } = require("./cities.js");
 const _ = require("lodash"); // needed for unit tests
 
+/* Metodo substr:       string.substr(inicio[, longitud])
+
+var string = "abcdefghij";
+console.log(string.substr(1,2));   // 'bc'
+console.log(string.substr(1));   // 'bcdefghij'
+
+- Ej del ejercicio:
+Si le paso la palabra "boston", va a crear el Nodo con "b" y crear un nuevo nodo en el hijo con la palabra "oston"
+*/
+
 class Node {
-  // you don't have to use this data structure, this is just how I did it
-  // you'll almost definitely need more methods than this and a constructor
-  // and instance variables
+  constructor(string) {
+    this.children = [];
+    this.terminus = false;
+    this.value = string[0] || ""; // the first letter
+    if (string.length > 1) {
+      this.children.push(new Node(string.substr(1))); // "b"  nodo padre, "oston" nodo hijo
+    } else {
+      this.terminus = true;
+    }
+  }
+  // estamos tratando de llegar al punto al final de esto donde sólo podemos concatenar holísticamente un nuevo nodo a él
+  add(string) {
+    const value = string[0];
+    const next = string.substr(1);
+    for (let i = 0; i < this.children.length; i++) {
+      // donde vamos a poner nuestro nuevo string aquí cada vez que llamamos a add
+      const child = this.children[i];
+      if (child.value === value) {
+        if (next) {
+          child.add(next);
+        } else {
+          child.terminus = true; // si sigue una letra que no concuerda con lo que tengo
+        }
+        return;
+      }
+    }
+    this.children.push(new Node(string));
+  }
+
+  _complete(search, built, suggestions) {
+    // suggestions es completions
+    // sugerimos solo 3 ciudades que coincidan, no toda la lista!!!
+    if (suggestions.length >= 3 || (search && search[0] !== this.value)) {
+      return suggestions;
+    }
+
+    if (this.terminus) {
+      suggestions.push(`${built}${this.value}`); // cada letra que devuelvo
+    }
+
+    this.children.forEach((child) =>
+      child._complete(search.substr(1), `${built}${this.value}`, suggestions)
+    );
+    /*  OTRA FORMA:
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      sugestions = child._complete(search.substr(1), `${built}${this.value}`, suggestions)
+    }
+    */
+    return suggestions;
+  }
+
   complete(string) {
-    return [];
+    let completions = [];
+
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
+      completions = completions.concat(child._complete(string, "", [])); // creamos _complete que se va a llamar recursivamente en todos los children para tomar todas las varientes diferentes posibles de completions
+    }
+    return completions;
   }
 }
 
 const createTrie = (words) => {
-  // you do not have to do it this way; this is just how I did it
+  // words getting back from the test below (city names)
+  // root node needs to be an empty string
   const root = new Node("");
 
-  // more code should go here
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    root.add(word.toLowerCase());
+  }
 
   return root;
 };
 
 // unit tests
 // do not modify the below code
-describe.skip("tries", function () {
+describe("tries", function () {
   test("dataset of 10 – san", () => {
     const root = createTrie(CITY_NAMES.slice(0, 10));
     const completions = root.complete("san");
@@ -69,7 +138,7 @@ describe.skip("tries", function () {
         "new orleans",
         "new haven",
         "newark",
-        "newport news"
+        "newport news",
       ]).length
     ).toBe(3);
   });
@@ -127,13 +196,13 @@ describe.skip("tries", function () {
         "santee",
         "sandy",
         "sandy springs",
-        "sanford"
+        "sanford",
       ]).length
     ).toBe(3);
   });
 });
 
-describe.skip("edge cases", () => {
+describe("edge cases", () => {
   test("handle whole words – seattle", () => {
     const root = createTrie(CITY_NAMES.slice(0, 30));
     const completions = root.complete("seattle");

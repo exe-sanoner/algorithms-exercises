@@ -31,6 +31,7 @@ const findMostCommonTitle = (myId, degreesOfSeparation) => {
   const jobs = {};
 
   for (let i = 0; i <= degreesOfSeparation; i++) {
+    // is the same as the Breadth-First solution (more or less...)
     const newQueue = [];
     while (queue.length) {
       const user = getUser(queue.shift());
@@ -52,11 +53,17 @@ const findMostCommonTitle = (myId, degreesOfSeparation) => {
   }
 
   // find key with the biggest number
+  // Object.keys devuelve un array cuyos elementos son strings correspondientes a las propiedades enumerables que se encuentran directamente en el object.
+
+  //  console.log("objectjobs",jobs);
 
   const jobKeys = Object.keys(jobs);
+  // console.log("jobKeys",jobKeys);
 
-  let biggestNumber = jobs[jobKeys[0]];
-  let jobName = jobKeys[0];
+  let biggestNumber = jobs[jobKeys[0]]; //  2
+  // console.log("biggestNumber",biggestNumber);
+  let jobName = jobKeys[0]; // Developer IV
+
   for (let i = 1; i < jobKeys.length; i++) {
     const currentJob = jobKeys[i];
     if (jobs[currentJob] > biggestNumber) {
@@ -80,7 +87,6 @@ const findMostCommonTitle = (myId, degreesOfSeparation) => {
 // unit tests
 // do not modify the below code
 describe("findMostCommonTitle", function () {
-  // the getUser function and data comes from this CodePen: https://codepen.io/btholt/pen/NXJGwa?editors=0010
   test("user 30 with 2 degrees of separation", () => {
     expect(findMostCommonTitle(30, 2)).toBe("Librarian");
   });

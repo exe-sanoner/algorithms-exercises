@@ -25,14 +25,15 @@
 
 class LinkedList {
   constructor() {
-    this.head = null;
-    this.tail = null;
+    this.head = null; // cabeza
+    this.tail = null; // cola
     this.length = 0;
   }
   push(value) {
     const node = new Node(value);
     this.length++;
     if (!this.head) {
+      // si no tengo cabeza
       this.head = node;
     } else {
       this.tail.next = node;
@@ -48,7 +49,6 @@ class LinkedList {
     for (let i = 0; i < index; i++) {
       current = current.next;
     }
-
     return current;
   }
   get(index) {
@@ -57,6 +57,7 @@ class LinkedList {
     return node.value;
   }
   delete(index) {
+    // if delete the head
     if (index === 0) {
       const head = this.head;
       if (head) {
@@ -69,8 +70,10 @@ class LinkedList {
       return head.value;
     }
 
-    const node = this._find(index - 1);
-    const excise = node.next;
+    // MOVIENDO EL NODE
+    // excise = eliminar
+    const node = this._find(index - 1); // busco el node previo al que voy a eliminar
+    const excise = node.next; // el que voy a eliminar, es el siguiente
     if (!excise) return null;
     node.next = excise.next;
     if (!node.next) this.tail = node.next;

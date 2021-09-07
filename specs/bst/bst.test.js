@@ -16,18 +16,58 @@ right - Node/object - the right node which itself may be another tree
 
 */
 
+// SOLO IMPLEMENTAREMOS METODO PARA AGREGAR (add(value))
+
 class Tree {
-  // code goes here
+  constructor() {
+    this.root = null;
+  }
+  add(value) {
+    // some logic around if this is the root
+    // find the correct place to add
+    if (this.root === null) {
+      this.root = new Node(value); // creo el root
+    } else {
+      let current = this.root;
+      while (true) {
+        if (current.value > value) {
+          // go left
+          if (current.left) {
+            current = current.left;
+          } else {
+            current.left = new Node(value);
+            break; // o return, stop the loop
+          }
+        } else {
+          // go right
+          if (current.right) {
+            current = current.right;
+          } else {
+            current.right = new Node(value);
+            break;
+          }
+        }
+      }
+    }
+    return this; // return the tree
+  }
+  toObject() {
+    return this.root;
+  }
 }
 
 // you might consider using a Node class too
-// class Node {
-//   // code maybe goes here
-// }
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
 
 // unit tests
 // do not modify the below code
-describe.skip("Binary Search Tree", function () {
+describe("Binary Search Tree", function () {
   it("creates a correct tree", () => {
     const nums = [3, 7, 4, 6, 5, 1, 10, 2, 9, 8];
     const tree = new Tree();
